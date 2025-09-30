@@ -2,8 +2,8 @@ import os
 import pytest
 import json
 from pathlib import Path
-
-from project.app import app, db
+from flask import session
+from project.app import app, db, login_required
 
 TEST_DB = "test.db"
 
@@ -78,7 +78,11 @@ def test_messages(client):
 
 def test_delete_message(client):
     """Ensure the messages are being deleted"""
-    rv = client.get('/delete/1')
+    rv = client.get("/delete/1")
+    data = json.loads(rv.data)
+    assert data["status"] == 0
+    login(client, app.config["USERNAME"], app.config["PASSWORD"])
+    rv = client.get("/delete/1")
     data = json.loads(rv.data)
     assert data["status"] == 1
 
@@ -102,3 +106,34 @@ def test_search(client):
     assert rv.status_code == 200
     assert b"First" in rv.data   # title shows up
     assert b"Hello World" in rv.data  # body shows up
+
+
+def test_login(client):
+    rv = client.get('/delete/1')
+    data = json.loads(rv.data)
+    assert data["status"] != 1
+
+
+def dummy_view():
+    return "OK", 200
+
+@login_required
+def protected_view():
+    return dummy_view()
+
+def test_login_required_not_logged_in(client):
+    """Blocks access when not logged in"""
+    with app.test_request_context():
+        session.clear()
+        response, status = protected_view()
+        assert status == 401
+        assert response.json["status"] == 0
+        assert response.json["message"] == "Please log in."
+
+def test_login_required_logged_in(client):
+    """Allows access when logged in"""
+    with app.test_request_context():
+        session["logged_in"] = True
+        response, status = protected_view()
+        assert status == 200
+        assert response == "OK"
