@@ -8,7 +8,7 @@ alias deactivate 'test $?_OLD_VIRTUAL_PATH != 0 && setenv PATH "$_OLD_VIRTUAL_PA
 # Unset irrelevant variables.
 deactivate nondestructive
 
-setenv VIRTUAL_ENV "/Users/shuhao/Desktop/ECE444/UofT-ECE444-PRA-TDD-Deployment/flaskr-tdd/env"
+setenv VIRTUAL_ENV "/Users/shuhao/Desktop/ECE444/UofT-ECE444-PRA-TDD-Deployment/env"
 
 set _OLD_VIRTUAL_PATH="$PATH"
 setenv PATH "$VIRTUAL_ENV/bin:$PATH"

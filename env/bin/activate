@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/shuhao/Desktop/ECE444/UofT-ECE444-PRA-TDD-Deployment/flaskr-tdd/env"
+VIRTUAL_ENV="/Users/shuhao/Desktop/ECE444/UofT-ECE444-PRA-TDD-Deployment/env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

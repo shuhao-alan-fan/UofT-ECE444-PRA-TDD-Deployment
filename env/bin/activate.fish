@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/shuhao/Desktop/ECE444/UofT-ECE444-PRA-TDD-Deployment/flaskr-tdd/env"
+set -gx VIRTUAL_ENV "/Users/shuhao/Desktop/ECE444/UofT-ECE444-PRA-TDD-Deployment/env"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
