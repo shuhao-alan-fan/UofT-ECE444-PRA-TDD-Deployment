@@ -81,3 +81,24 @@ def test_delete_message(client):
     rv = client.get('/delete/1')
     data = json.loads(rv.data)
     assert data["status"] == 1
+
+
+# def test_search(client):
+#     rv = client.get('/search/',content_type = "html/text")
+#     assert b"First" in rv.data
+#     assert b"query" in rv.data
+
+def test_search(client):
+    # First log in and add a post through the /add route
+    login(client, app.config["USERNAME"], app.config["PASSWORD"])
+    client.post(
+        "/add",
+        data=dict(title="First", text="Hello World"),
+        follow_redirects=True,
+    )
+
+    # Now search for it
+    rv = client.get("/search/?query=First")
+    assert rv.status_code == 200
+    assert b"First" in rv.data   # title shows up
+    assert b"Hello World" in rv.data  # body shows up
