@@ -1,4 +1,3 @@
-import os
 import pytest
 import json
 from pathlib import Path
@@ -6,6 +5,7 @@ from flask import session
 from project.app import app, db, login_required
 
 TEST_DB = "test.db"
+
 
 # This is a pytest fixture, which sets up a known state for each test function before the test runs.
 @pytest.fixture
@@ -76,6 +76,7 @@ def test_messages(client):
     assert b"&lt;Hello&gt;" in rv.data
     assert b"<strong>HTML</strong> allowed here" in rv.data
 
+
 def test_delete_message(client):
     """Ensure the messages are being deleted"""
     rv = client.get("/delete/1")
@@ -86,11 +87,6 @@ def test_delete_message(client):
     data = json.loads(rv.data)
     assert data["status"] == 1
 
-
-# def test_search(client):
-#     rv = client.get('/search/',content_type = "html/text")
-#     assert b"First" in rv.data
-#     assert b"query" in rv.data
 
 def test_search(client):
     # First log in and add a post through the /add route
@@ -104,12 +100,12 @@ def test_search(client):
     # Now search for it
     rv = client.get("/search/?query=First")
     assert rv.status_code == 200
-    assert b"First" in rv.data   # title shows up
+    assert b"First" in rv.data  # title shows up
     assert b"Hello World" in rv.data  # body shows up
 
 
 def test_login(client):
-    rv = client.get('/delete/1')
+    rv = client.get("/delete/1")
     data = json.loads(rv.data)
     assert data["status"] != 1
 
@@ -117,9 +113,11 @@ def test_login(client):
 def dummy_view():
     return "OK", 200
 
+
 @login_required
 def protected_view():
     return dummy_view()
+
 
 def test_login_required_not_logged_in(client):
     """Blocks access when not logged in"""
@@ -129,6 +127,7 @@ def test_login_required_not_logged_in(client):
         assert status == 401
         assert response.json["status"] == 0
         assert response.json["message"] == "Please log in."
+
 
 def test_login_required_logged_in(client):
     """Allows access when logged in"""
